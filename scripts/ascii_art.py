@@ -15,7 +15,7 @@ def generate_ascii_array(length=16):
     print(f"Generating random ascii-set of length {length}...")
     while len(ascii_array) < length and time.time()-start_time < 5:
         char = chr(random.randint(0, 127))
-        if char.isprintable() and not char.isspace():
+        if char.isprintable() and not char.isspace() and not char.isalpha() and not char.isdigit():
             if char not in ascii_array:
                 ascii_array.append(char)
     print("Done !")
