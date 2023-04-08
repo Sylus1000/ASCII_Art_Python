@@ -1,0 +1,4 @@
+results/*
+scripts/__pycache__/*
+*.gif
+*.png
