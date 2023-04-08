@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument('--scale', '-s', type=float, default=0.1, help='new size of the resulting ASCII-Image relative to original img dims')
     parser.add_argument('--font-size', '-f', type=int, default=12, help='font size')
     parser.add_argument('--output', '-o', type=str, default='ascii_art', help='output filename (not path)')
-    parser.add_argument('--target-seconds', '-ts', type=float, default=0.25, help='stretch .gif length to x seconds (1 being normal speed)')
+    parser.add_argument('--target-fps', '-ts', type=float, default=60, help='target fps')
     opt = parser.parse_args()
 
     image_path = opt.img
@@ -61,9 +61,9 @@ if __name__ == "__main__":
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
-        ts = opt.target_seconds
-        fps = num_frames // ts
-        print(f"Number of frames: {num_frames}, TargetSeconds:{ts}, FPS: {fps}")
+        tfps = opt.target_fps
+        fps = num_frames // tfps
+        print(f"Number of frames: {num_frames}, TargetFPS:{tfps}, FPS: {fps}")
         time.sleep(2)
         ascii_frames = []
         for frame in ImageSequence.Iterator(im):
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         for frame in ascii_frames:
             os.system('cls' if os.name == 'nt' else 'clear') # clear the console
             print(frame) # print the current frame
-            time.sleep(1 / fps) # wait for a short time before printing the next frame
+            #time.sleep(1 / fps) # wait for a short time before printing the next frame
         end_time = time.time()
         print(f"Done in: {end_time-start_time} seconds !")
     else:
