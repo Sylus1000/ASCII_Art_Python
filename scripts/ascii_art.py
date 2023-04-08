@@ -3,14 +3,29 @@ import argparse
 import numpy as np
 import time
 from PIL import Image, ImageFont, ImageSequence
+import random
 
-ASCII_CHARS = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@', '0', '9']
+ASCII_CHARS_S = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@']
+ASCII_CHARS_X = ['$','@','B','%','8','&','W','M','#','*','o','a','h','k','b','d','p','q','w','m','Z','O','0','Q','L','C','J','U','Y','X','z','c','v','u','n','x','r','j','f','t','/','\\','|','(',')','1','{','}','[',']','?','-', '_', '+', '~', '<', '>', 'i', '!', 'l', 'I', ';', ':', ',', '"', '^', '`', '.']
+ASCII_CHARS = ASCII_CHARS_X
+
+def generate_ascii_array():
+    ascii_array = []
+    start_time = time.time()
+    print("Generating random ascii-set...")
+    while len(ascii_array) < 256 and time.time()-start_time < 5:
+        char = chr(random.randint(0, 127))
+        if char.isprintable() and not char.isspace():
+            if char not in ascii_array:
+                ascii_array.append(char)
+    print("Done !")
+    return ascii_array
 
 def get_ascii_char(pixel_value):
     if pixel_value < 0 or pixel_value > 255:
         print('Invalid pixel value:', pixel_value)
-    # map the pixel value to an index in the ASCII_CHARS list
-    index = int(pixel_value / 25.5)
+    interval_size = 256 / len(ASCII_CHARS)
+    index = min(int(pixel_value // interval_size), len(ASCII_CHARS) - 1)
     return ASCII_CHARS[index]
 
 def process_image_auto(image_path, output_name, scale=1, font_size=12):
@@ -49,13 +64,20 @@ if __name__ == "__main__":
     parser.add_argument('--scale', '-s', type=float, default=0.1, help='new size of the resulting ASCII-Image relative to original img dims')
     parser.add_argument('--font-size', '-f', type=int, default=12, help='font size')
     parser.add_argument('--output', '-o', type=str, default='ascii_art', help='output filename (not path)')
+    parser.add_argument('--ascii-set', '-as', type=str, choices=["large", "small", "random"], default='random', help='size of ascii-characters to use')
     opt = parser.parse_args()
 
     image_path = opt.img
     output_name = opt.output
     scale = opt.scale
     font_size = opt.font_size
-
+    if opt.ascii_set == "large":
+        ASCII_CHARS = ASCII_CHARS_X
+    elif opt.ascii_set == "small":
+        ASCII_CHARS = ASCII_CHARS_S
+    elif opt.ascii_set == "random":
+        ASCII_CHARS = generate_ascii_array()
+    
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
