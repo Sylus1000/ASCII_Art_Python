@@ -61,8 +61,9 @@ if __name__ == "__main__":
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
-        fps = num_frames // opt.target_seconds
-        print(f"Number of frames: {num_frames}, FPS: {fps}")
+        ts = opt.target_seconds
+        fps = num_frames // ts
+        print(f"Number of frames: {num_frames}, TargetSeconds:{ts}, FPS: {fps}")
         time.sleep(2)
         ascii_frames = []
         for frame in ImageSequence.Iterator(im):
