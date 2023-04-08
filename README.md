@@ -1,2 +1,4 @@
-# ASCII_Art
-run ```python scripts/ascii_art.py --help´´´´
+# ASCII_Art 
+```
+python scripts/ascii_art.py --help
+```
