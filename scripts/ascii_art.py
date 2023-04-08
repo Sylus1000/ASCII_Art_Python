@@ -9,16 +9,17 @@ ASCII_CHARS_S = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@']
 ASCII_CHARS_X = ['$','@','B','%','8','&','W','M','#','*','o','a','h','k','b','d','p','q','w','m','Z','O','0','Q','L','C','J','U','Y','X','z','c','v','u','n','x','r','j','f','t','/','\\','|','(',')','1','{','}','[',']','?','-', '_', '+', '~', '<', '>', 'i', '!', 'l', 'I', ';', ':', ',', '"', '^', '`', '.']
 ASCII_CHARS = ASCII_CHARS_X
 
-def generate_ascii_array():
+def generate_ascii_array(length=16):
     ascii_array = []
     start_time = time.time()
-    print("Generating random ascii-set...")
-    while len(ascii_array) < 256 and time.time()-start_time < 5:
+    print(f"Generating random ascii-set of length {length}...")
+    while len(ascii_array) < length and time.time()-start_time < 5:
         char = chr(random.randint(0, 127))
         if char.isprintable() and not char.isspace():
             if char not in ascii_array:
                 ascii_array.append(char)
     print("Done !")
+    print(f"Ascii-set length is: {len(ascii_array)}")
     return ascii_array
 
 def get_ascii_char(pixel_value):
