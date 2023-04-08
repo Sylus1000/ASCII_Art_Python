@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument('--scale', '-s', type=float, default=0.1, help='new size of the resulting ASCII-Image relative to original img dims')
     parser.add_argument('--font-size', '-f', type=int, default=12, help='font size')
     parser.add_argument('--output', '-o', type=str, default='ascii_art', help='output filename (not path)')
-    parser.add_argument('--target-seconds', '-ts', type=int, default=2, help='stretch .gif length to x seconds')
+    parser.add_argument('--target-seconds', '-ts', type=float, default=0.25, help='stretch .gif length to x seconds (1 being normal speed)')
     opt = parser.parse_args()
 
     image_path = opt.img
