@@ -61,14 +61,13 @@ if __name__ == "__main__":
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
-        fps = num_frames * opt.target_seconds
+        fps = num_frames // opt.target_seconds
         print(f"Number of frames: {num_frames}, FPS: {fps}")
-        time.sleep(3)
+        time.sleep(2)
         ascii_frames = []
         for frame in ImageSequence.Iterator(im):
             # Convert the frame to ASCII art
             ascii_image = process_image_auto(frame, None, scale, font_size)
-            ascii_frames.append(ascii_image)
             ascii_frames.append(ascii_image)
 
         start_time = time.time()
