@@ -49,7 +49,6 @@ if __name__ == "__main__":
     parser.add_argument('--scale', '-s', type=float, default=0.1, help='new size of the resulting ASCII-Image relative to original img dims')
     parser.add_argument('--font-size', '-f', type=int, default=12, help='font size')
     parser.add_argument('--output', '-o', type=str, default='ascii_art', help='output filename (not path)')
-    parser.add_argument('--target-fps', '-ts', type=int, default=60, help='target fps')
     opt = parser.parse_args()
 
     image_path = opt.img
@@ -57,28 +56,27 @@ if __name__ == "__main__":
     scale = opt.scale
     font_size = opt.font_size
 
-    # If the image is a gif, display each frame as ASCII art in the console
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
-        tfps = opt.target_fps
-        fps = num_frames // tfps
-        print(f"Number of frames: {num_frames}, TargetFPS:{tfps}, FPS: {fps}")
+        fps = 30 if num_frames // 60 <= 1 else 60
+        print(f"Number of frames: {num_frames}, FPS: {fps}")
         time.sleep(2)
         ascii_frames = []
         for frame in ImageSequence.Iterator(im):
-            # Convert the frame to ASCII art
             ascii_image = process_image_auto(frame, None, scale, font_size)
             ascii_frames.append(ascii_image)
 
-        start_time = time.time()
-        # Assuming `ascii_frames` is a list of ASCII art strings for each frame of the GIF
-        for frame in ascii_frames:
+        current_index = 0
+        while(True):
             os.system('cls' if os.name == 'nt' else 'clear') # clear the console
-            print(frame) # print the current frame
-            #time.sleep(1 / fps) # wait for a short time before printing the next frame
-        end_time = time.time()
-        print(f"Done in: {end_time-start_time} seconds !")
+            if current_index < len(ascii_frames):
+                print(ascii_frames[current_index])
+                current_index+=1
+            else:
+                current_index=0
+                print(ascii_frames[current_index])
+            time.sleep(1 / fps)
     else:
         process_image_auto(image_path, output_name, scale, font_size)
 
