@@ -82,7 +82,7 @@ if __name__ == "__main__":
     if image_path.endswith('.gif'):
         im = Image.open(image_path)
         num_frames = im.n_frames
-        fps = 30 if num_frames // 60 <= 1 else 60
+        fps = 30 if num_frames // 60 < 2 else 60 if num_frames // 120 < 2 else 120
         print(f"Number of frames: {num_frames}, FPS: {fps}")
         time.sleep(2)
         ascii_frames = []
